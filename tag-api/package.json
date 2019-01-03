@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "node ace test",
-    "lint": "./node_modules/.bin/eslint --format './node_modules/eslint-friendly-formatter/index.js' .",
+    "lint": "./node_modules/.bin/eslint --format './node_modules/eslint-friendly-formatter/index.js' ."
   },
   "keywords": [
     "adonisjs",
