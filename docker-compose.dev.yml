@@ -1,0 +1,28 @@
+version: '3'
+services:
+  demo-frontend:
+    build:
+      context: demo-frontend
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=development
+    command: bash -c "npm install && npm start"
+    tty: true
+    volumes:
+      - ./demo-frontend:/opt/app
+  tag-api:
+    build:
+      context: tag-api
+      args:
+        - NODE_ENV=development
+    command: bash -c "npm install && npm start"
+    tty: true
+    ports:
+      - 3000:3000
+      - 9220:9220
+      - 5858:5858
+    volumes:
+      - ./tag-api:/opt/app
+  mongodb:
+    ports:
+      - 27017:27017

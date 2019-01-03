@@ -1,0 +1,39 @@
+version: '3'
+services:
+  demo-frontend:
+    image: demo-frontend
+    build:
+      context: demo-frontend
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+  tag-api:
+    image: tag-api
+    build:
+      context: tag-api
+      args:
+        - NODE_ENV=production
+  mongodb:
+    image: mongodb
+    build:
+      context: mongodb
+      dockerfile: Dockerfile
+    volumes:
+      - mongo-data:/data/db
+  nginx:
+    image: nginx
+    build: nginx
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - tag-api
+      - demo-frontend
+  redis:
+    image: redis
+    build: redis
+    volumes:
+      - redis-data:/data
+volumes:
+  mongo-data:
+  redis-data:

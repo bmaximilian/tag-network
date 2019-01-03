@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+cd "$(dirname "$0")"
+cd ../..
+
+docker-compose run -T demo-frontend npm run ci
+docker-compose run -T tag-api npm run ci
