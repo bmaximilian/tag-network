@@ -6,8 +6,11 @@ services:
       dockerfile: Dockerfile
       args:
         - NODE_ENV=development
+    ports:
+      - 3001:3000
+      - 9221:9220
+      - 5859:5858
     command: bash -c "npm install && npm start"
-    tty: true
     volumes:
       - ./demo-frontend:/opt/app
   tag-api:
@@ -15,8 +18,7 @@ services:
       context: tag-api
       args:
         - NODE_ENV=development
-    command: bash -c "npm install && npm start"
-    tty: true
+    command: bash -c "npm install && npm run serve"
     ports:
       - 3000:3000
       - 9220:9220

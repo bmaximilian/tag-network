@@ -1,0 +1,68 @@
+{
+    "extends": [
+        "tslint:recommended",
+        "tslint-config-prettier",
+        "tslint-eslint-rules",
+        "tslint-react",
+        "tslint-config-airbnb",
+        "tslint-no-unused-expression-chai",
+        "tslint-no-circular-imports"
+    ],
+    "rules": {
+        "import-name": [true, {
+            "react-dom": "ReactDOM",
+            "react": "React"
+        }],
+        "no-duplicate-variable": true,
+        // "no-unused-variable": [true],
+        "no-param-reassign": [2, { "props": false }],
+        "no-else-return": ["error", { "allowElseIf": true }],
+        "import/extensions": [
+            "error",
+            "always",
+            {
+                "js": "never",
+                "ts": "never"
+            }
+        ],
+        "max-line-length": [
+            true,
+            {
+                "limit": 120,
+                "ignore-pattern": "^import |^export {(.*?)}"
+            }
+        ],
+        "max-file-line-count": [true, 500],
+        "no-debugger": true,
+        "no-console": true,
+        "no-trailing-whitespace": true,
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "object-literal-sort-keys": false,
+        "ter-indent": [true, 4, {
+            "MemberExpression": 0,
+            "SwitchCase": 1
+        }],
+        "indent": [
+            true,
+            "spaces",
+            4
+        ],
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 1,
+                "maxBOF": 1
+            }
+        ]
+    },
+    "rulesDirectory": [
+        "node_modules/tslint-eslint-rules/dist/rules"
+    ]
+}

@@ -10,3 +10,4 @@ fi
 
 ./docker.sh
 ./git.sh
+./tag-api.sh

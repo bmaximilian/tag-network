@@ -1,8 +1,5 @@
 FROM node:10.7
 
-# install global framework dependencies
-RUN npm i -g @adonisjs/cli
-
 # create app directory
 RUN mkdir -p /opt/app && chown -R node:node /opt/app
 
