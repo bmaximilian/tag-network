@@ -9,3 +9,5 @@ else
 fi
 
 mongo admin --eval "db.createUser({user: '$USER', pwd: '$USER_PASSWD', roles: [ 'dbAdmin' ] } );"
+mongo tag_network --eval "db"
+mongo tag_network --eval "db.createUser({user: '$USER', pwd: '$USER_PASSWD', roles: [ 'dbAdmin' ] } );"

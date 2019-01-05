@@ -56,7 +56,7 @@ const aliases = {};
  |
  */
 const commands = [
-    'App/Modules/Tokens/Commands/TokenGenerate',
+    'App/Modules/ApiKeys/Commands/ApiKeyGenerate',
 ];
 
 module.exports = {

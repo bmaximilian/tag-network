@@ -1,16 +1,16 @@
 const { Command } = require('@adonisjs/ace');
 
 /**
- * @class TokenGenerate
+ * @class ApiKeyGenerate
  */
-class TokenGenerate extends Command {
+class ApiKeyGenerate extends Command {
     /**
      * The command signature
      *
      * @returns {string} : The signature
      */
     static get signature() {
-        return 'token:generate';
+        return 'apiKey:generate';
     }
 
     /**
@@ -19,7 +19,7 @@ class TokenGenerate extends Command {
      * @returns {string} : The description
      */
     static get description() {
-        return 'Generate an API token';
+        return 'Generate an API Key';
     }
 
     /**
@@ -30,8 +30,8 @@ class TokenGenerate extends Command {
      * @returns {Promise<void>} : The executed command
      */
     async handle() {
-        this.info('Dummy implementation for token:generate command');
+        this.info('Dummy implementation for apiKey:generate command');
     }
 }
 
-module.exports = TokenGenerate;
+module.exports = ApiKeyGenerate;
