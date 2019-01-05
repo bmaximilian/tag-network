@@ -57,6 +57,7 @@ const aliases = {};
  */
 const commands = [
     'App/Modules/ApiKeys/Commands/ApiKeyGenerate',
+    'App/Modules/ApiKeys/Commands/ApiKeyGet',
 ];
 
 module.exports = {
