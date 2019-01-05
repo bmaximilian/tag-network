@@ -53,7 +53,9 @@ const aliases = {};
  | Here you store ace commands for your package
  |
  */
-const commands = [];
+const commands = [
+    'App/Modules/Tokens/Commands/TokenGenerate',
+];
 
 module.exports = {
     providers, aceProviders, aliases, commands,
