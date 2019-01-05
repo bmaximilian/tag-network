@@ -1,3 +1,6 @@
+
+const TagCollection = use('App/Modules/Tags/Models/TagCollection');
+
 /**
  * @class TagCollectionController
  */
@@ -12,7 +15,9 @@ class TagCollectionController {
      * @param {View} ctx.view
      */
     async index() {
-        return { id: null, tags: [] };
+        const collections = await TagCollection.with('tags').fetch();
+
+        return collections.toJSON();
     }
 
     /**

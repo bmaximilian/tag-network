@@ -37,6 +37,7 @@ module.exports = {
         // 'valid-jsdoc': 'error',
         'arrow-body-style': 'off',
         'no-empty-function': 'off',
+        'no-underscore-dangle': ['error', { allow: ['_id'] }],
         'max-len': ['error', { 'code': 120 }],
         /* 'require-jsdoc': ['error', {
             require: {

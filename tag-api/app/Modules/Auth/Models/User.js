@@ -31,7 +31,7 @@ class User extends Model {
    * @return {Object}
    */
     tokens() {
-        return this.referMany('App/Modules/Auth/Models/Token', '_id', 'tokens');
+        return this.hasMany('App/Modules/Auth/Models/Token', '_id', 'tokens');
     }
 }
 

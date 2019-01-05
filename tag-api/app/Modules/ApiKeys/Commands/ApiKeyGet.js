@@ -1,5 +1,6 @@
 const { Command } = require('@adonisjs/ace');
 
+const Database = use('Database');
 const ApiKey = use('App/Modules/ApiKeys/Models/ApiKey');
 
 /**
@@ -40,7 +41,7 @@ class ApiKeyGenerate extends Command {
 
         this.info(`Active API keys:\n\t${keys.join('\n\t')}`);
 
-        process.exit(0);
+        await Database.close();
         return Promise.resolve();
     }
 }
