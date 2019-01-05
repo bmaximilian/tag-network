@@ -1,5 +1,6 @@
 
 const TagCollection = use('App/Modules/Tags/Models/TagCollection');
+const TagCollectionTransformer = use('App/Modules/Tags/Transformers/TagCollectionTransformer');
 
 /**
  * @class TagCollectionController
@@ -17,7 +18,8 @@ class TagCollectionController {
     async index() {
         const collections = await TagCollection.with('tags').fetch();
 
-        return collections.toJSON();
+        return collections.toJSON()
+        .map(collection => new TagCollectionTransformer(collection).toTarget());
     }
 
     /**
