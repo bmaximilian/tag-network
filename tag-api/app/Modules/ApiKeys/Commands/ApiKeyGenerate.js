@@ -1,5 +1,7 @@
 const { Command } = require('@adonisjs/ace');
 
+const ApiKey = use('App/Modules/ApiKeys/Models/ApiKey');
+
 /**
  * @class ApiKeyGenerate
  */
@@ -30,7 +32,27 @@ class ApiKeyGenerate extends Command {
      * @returns {Promise<void>} : The executed command
      */
     async handle() {
-        this.info('Dummy implementation for apiKey:generate command');
+        const notExpiredKeys = await ApiKey
+        .where({ expired_at: null })
+        .fetch();
+
+        await Promise.all(
+            notExpiredKeys.rows
+            .map((key) => {
+                key.setExpired();
+                return key;
+            })
+            .map(key => key.save()),
+        );
+
+        const newKey = new ApiKey();
+        newKey.generateKey();
+        await newKey.save();
+
+        this.info(`Generated new API key: ${newKey.key}`);
+
+        process.exit(0);
+        return Promise.resolve();
     }
 }
 
