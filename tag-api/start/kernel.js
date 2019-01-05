@@ -35,6 +35,7 @@ const globalMiddleware = [
 const namedMiddleware = {
     auth: 'Adonis/Middleware/Auth',
     guest: 'Adonis/Middleware/AllowGuestOnly',
+    requireApiKey: 'App/Modules/ApiKeys/Middleware/CheckApiKey',
 };
 
 /*

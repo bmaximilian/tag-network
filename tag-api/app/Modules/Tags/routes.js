@@ -20,4 +20,6 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route');
 
-Route.get('/api/tags', () => { return { tags: [] }; });
+Route
+.get('/api/tags', () => { return { tags: [] }; });
+// .middleware(['requireApiKey']);
