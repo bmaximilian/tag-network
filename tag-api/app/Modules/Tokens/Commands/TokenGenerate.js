@@ -19,7 +19,7 @@ class TokenGenerate extends Command {
      * @returns {string} : The description
      */
     static get description() {
-        return 'Tell something helpful about this command';
+        return 'Generate an API token';
     }
 
     /**
