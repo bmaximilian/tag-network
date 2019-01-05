@@ -21,13 +21,15 @@
 const Route = use('Route');
 
 Route.group(() => {
-    Route.get('tags', () => { return { tags: [] }; });
+    Route.get('tags', 'App/Modules/Tags/Controllers/Http/TagController.index');
 
-    Route.get('collections', () => { return { collections: [] }; });
-    Route.post('collections', () => { return { id: null, tags: [] }; });
+    Route.get('collections', 'App/Modules/Tags/Controllers/Http/TagCollectionController.index');
+    Route.post('collections', 'App/Modules/Tags/Controllers/Http/TagCollectionController.store');
+    Route.patch('collections', 'App/Modules/Tags/Controllers/Http/TagCollectionController.update');
+    Route.put('collections', 'App/Modules/Tags/Controllers/Http/TagCollectionController.update');
 
-    Route.post('tags/suggestions', () => { return { tags: [] }; });
-    Route.get('tags/network', () => { return { tags: [{ id: null, tags: [] }] }; });
+    Route.post('tags/suggestions', 'App/Modules/Tags/Controllers/Http/TagController.suggestions');
+    Route.get('tags/network', 'App/Modules/Tags/Controllers/Http/TagController.network');
 
     /* Also add a websocket channel that emits when a tag collection is added to the network */
 })
