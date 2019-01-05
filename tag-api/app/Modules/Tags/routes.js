@@ -20,6 +20,16 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route');
 
-Route
-.get('/api/tags', () => { return { tags: [] }; });
+Route.group(() => {
+    Route.get('tags', () => { return { tags: [] }; });
+
+    Route.get('collections', () => { return { collections: [] }; });
+    Route.post('collections', () => { return { id: null, tags: [] }; });
+
+    Route.post('tags/suggestions', () => { return { tags: [] }; });
+    Route.get('tags/network', () => { return { tags: [{ id: null, tags: [] }] }; });
+
+    /* Also add a websocket channel that emits when a tag collection is added to the network */
+})
+.prefix('api');
 // .middleware(['requireApiKey']);
