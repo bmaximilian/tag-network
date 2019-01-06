@@ -1,5 +1,8 @@
 
+const { uniq } = require('lodash');
+
 const TagCollection = use('App/Modules/Tags/Models/TagCollection');
+const Tag = use('App/Modules/Tags/Models/Tag');
 const TagCollectionTransformer = use('App/Modules/Tags/Transformers/TagCollectionTransformer');
 
 /**
@@ -10,16 +13,15 @@ class TagCollectionController {
      * Show a list of all tag collections.
      * GET collections
      *
-     * @param {object} ctx
-     * @param {Request} ctx.request
-     * @param {Response} ctx.response
-     * @param {View} ctx.view
+     * @return {object} : All collections
      */
     async index() {
-        const collections = await TagCollection.with('tags').fetch();
+        let collections = await TagCollection.with('tags').fetch();
 
-        return collections.toJSON()
+        collections = collections.toJSON()
         .map(collection => new TagCollectionTransformer(collection).toTarget());
+
+        return { collections };
     }
 
     /**
@@ -28,10 +30,38 @@ class TagCollectionController {
      *
      * @param {object} ctx
      * @param {Request} ctx.request
-     * @param {User} ctx.user
+     * @return {object} : The created collection
      */
-    async store() {
-        return { id: null, tags: [] };
+    async store({ request }) {
+        const requestBody = request.only(['tags']);
+
+        const tagCollection = new TagCollection();
+
+        await tagCollection.save();
+
+        await Promise.all(
+            uniq(requestBody.tags)
+            .map(async (requestTag) => {
+                let tag = await Tag
+                .where({ name: requestTag })
+                .first();
+
+                if (!tag) {
+                    tag = new Tag();
+                    tag.name = requestTag;
+                    await tag.save();
+                }
+
+                await tagCollection.tags().attach(tag._id);
+                return Promise.resolve(tag);
+            }),
+        );
+
+        await tagCollection.save();
+
+        const savedCollection = await TagCollection.where({ _id: tagCollection._id }).with('tags').first();
+
+        return new TagCollectionTransformer(savedCollection.toJSON()).toTarget();
     }
 
     /**

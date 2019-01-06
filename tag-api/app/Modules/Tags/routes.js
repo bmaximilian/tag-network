@@ -25,8 +25,8 @@ Route.group(() => {
 
     Route.get('collections', 'App/Modules/Tags/Controllers/Http/TagCollectionController.index');
     Route.post('collections', 'App/Modules/Tags/Controllers/Http/TagCollectionController.store');
-    Route.patch('collections', 'App/Modules/Tags/Controllers/Http/TagCollectionController.update');
-    Route.put('collections', 'App/Modules/Tags/Controllers/Http/TagCollectionController.update');
+    Route.patch('collections/:id', 'App/Modules/Tags/Controllers/Http/TagCollectionController.update');
+    Route.put('collections/:id', 'App/Modules/Tags/Controllers/Http/TagCollectionController.update');
 
     Route.post('tags/suggestions', 'App/Modules/Tags/Controllers/Http/TagController.suggestions');
     Route.get('tags/network', 'App/Modules/Tags/Controllers/Http/TagController.network');
