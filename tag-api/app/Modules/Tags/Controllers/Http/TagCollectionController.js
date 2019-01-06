@@ -1,6 +1,7 @@
 
 const { uniq } = require('lodash');
 
+const TagNetwork = use('TagNetwork');
 const NotFoundExceptionResponse = use('App/Responses/NotFoundExceptionResponse');
 const TagCollection = use('App/Modules/Tags/Models/TagCollection');
 const Tag = use('App/Modules/Tags/Models/Tag');
@@ -47,9 +48,12 @@ class TagCollectionController {
 
         await tagCollection.save();
 
-        const savedCollection = await TagCollection.where({ _id: tagCollection._id }).with('tags').first();
+        let savedCollection = await TagCollection.where({ _id: tagCollection._id }).with('tags').first();
+        savedCollection = savedCollection.toJSON();
 
-        return new TagCollectionTransformer(savedCollection.toJSON()).toTarget();
+        await TagNetwork.addOrUpdateCollectionInCache(savedCollection);
+
+        return new TagCollectionTransformer(savedCollection).toTarget();
     }
 
     /**
@@ -94,9 +98,12 @@ class TagCollectionController {
 
         await tagCollection.save();
 
-        const savedCollection = await TagCollection.where({ _id: tagCollection._id }).with('tags').first();
+        let savedCollection = await TagCollection.where({ _id: tagCollection._id }).with('tags').first();
+        savedCollection = savedCollection.toJSON();
 
-        return new TagCollectionTransformer(savedCollection.toJSON()).toTarget();
+        await TagNetwork.addOrUpdateCollectionInCache(savedCollection);
+
+        return new TagCollectionTransformer(savedCollection).toTarget();
     }
 
     /**
