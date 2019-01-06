@@ -14,7 +14,9 @@ class TagSuggestionProvider extends ServiceProvider {
     register() {
         this.app.singleton('TagSuggestion', () => {
             const Config = this.app.use('Adonis/Src/Config');
-            return new TagSuggestionService(Config);
+            const TagNetwork = this.app.use('TagNetwork');
+
+            return new TagSuggestionService(Config, TagNetwork);
         });
     }
 
@@ -27,7 +29,7 @@ class TagSuggestionProvider extends ServiceProvider {
      * @return {void}
      */
     boot() {
-        // TODO: Train the network with existing data
+        this.app.use('TagSuggestion').train();
     }
 }
 

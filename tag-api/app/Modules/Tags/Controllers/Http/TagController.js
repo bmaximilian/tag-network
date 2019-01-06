@@ -1,5 +1,6 @@
 
 const TagNetwork = use('TagNetwork');
+const TagSuggestion = use('TagSuggestion');
 const Tag = use('App/Modules/Tags/Models/Tag');
 const TagTransformer = use('App/Modules/Tags/Transformers/TagTransformer');
 
@@ -32,8 +33,12 @@ class TagController {
      * @param {Request} ctx.request
      * @param {Response} ctx.response
      */
-    async suggestions() {
-        return { tags: [] };
+    async suggestions({ request }) {
+        const requestBody = request.only(['tags']);
+
+        const tags = TagSuggestion.get(requestBody.tags);
+
+        return { tags };
     }
 
     /**
