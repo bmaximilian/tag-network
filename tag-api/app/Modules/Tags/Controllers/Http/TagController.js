@@ -1,3 +1,10 @@
+
+const { includes } = require('lodash');
+
+const Tag = use('App/Modules/Tags/Models/Tag');
+const TagCollection = use('App/Modules/Tags/Models/TagCollection');
+const TagTransformer = use('App/Modules/Tags/Transformers/TagTransformer');
+
 /**
  * @class TagController
  */
@@ -12,7 +19,11 @@ class TagController {
      * @param {View} ctx.view
      */
     async index() {
-        return { tags: [] };
+        let tags = await Tag.all();
+
+        tags = tags.toJSON().map(tag => new TagTransformer(tag).toTarget());
+
+        return { tags };
     }
 
     /**
@@ -36,7 +47,36 @@ class TagController {
      * @param {Response} ctx.response
      */
     async network() {
-        return { tags: [{ id: null, relatedTags: [] }] };
+        const tags = await Tag.all();
+        let tagCollections = await TagCollection.with('tags').fetch();
+
+        tagCollections = tagCollections.toJSON();
+
+        const tagsWithRelations = tags.toJSON().reduce((accumulator, currentTag) => {
+            const relatedTags = tagCollections.reduce((relatedAccumulator, currentTagCollection) => {
+                if (!includes(currentTagCollection.tags.map(tag => tag.name), currentTag.name)) {
+                    return relatedAccumulator;
+                }
+
+                return relatedAccumulator.concat(
+                    currentTagCollection.tags
+                    .filter((tag) => {
+                        return !includes(relatedAccumulator.map(relatedTag => relatedTag._id), tag._id)
+                            && tag._id !== currentTag._id;
+                    }),
+                );
+            }, []);
+
+            return [
+                ...accumulator,
+                {
+                    ...new TagTransformer(currentTag).toTarget(),
+                    relatedTags: relatedTags.map(tag => new TagTransformer(tag).toTarget()),
+                },
+            ];
+        }, []);
+
+        return { tags: tagsWithRelations };
     }
 }
 
