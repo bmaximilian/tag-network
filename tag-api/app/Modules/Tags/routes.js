@@ -24,10 +24,18 @@ Route.group(() => {
     Route.get('tags', 'App/Modules/Tags/Controllers/Http/TagController.index');
 
     Route.get('collections', 'App/Modules/Tags/Controllers/Http/TagCollectionController.index');
-    Route.post('collections', 'App/Modules/Tags/Controllers/Http/TagCollectionController.store');
+
+    Route.post('collections', 'App/Modules/Tags/Controllers/Http/TagCollectionController.store')
+    .validator('App/Modules/Tags/Validators/StoreTagCollection');
+
     Route.get('collections/:id', 'App/Modules/Tags/Controllers/Http/TagCollectionController.show');
-    Route.patch('collections/:id', 'App/Modules/Tags/Controllers/Http/TagCollectionController.update');
-    Route.put('collections/:id', 'App/Modules/Tags/Controllers/Http/TagCollectionController.update');
+
+    Route.patch('collections/:id', 'App/Modules/Tags/Controllers/Http/TagCollectionController.update')
+    .validator('App/Modules/Tags/Validators/UpdateTagCollection');
+
+    Route.put('collections/:id', 'App/Modules/Tags/Controllers/Http/TagCollectionController.update')
+    .validator('App/Modules/Tags/Validators/UpdateTagCollection');
+
     Route.delete('collections/:id', 'App/Modules/Tags/Controllers/Http/TagCollectionController.destroy');
 
     Route.post('tags/suggestions', 'App/Modules/Tags/Controllers/Http/TagController.suggestions');
