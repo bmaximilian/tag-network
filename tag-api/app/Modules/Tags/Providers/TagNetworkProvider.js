@@ -21,18 +21,6 @@ class TagNetworkProvider extends ServiceProvider {
             return new TagNetworkService(Config, Redis, Tag, TagCollection);
         });
     }
-
-    /**
-     * Attach context getter when all providers have
-     * been registered
-     *
-     * @method boot
-     *
-     * @return {void}
-     */
-    boot() {
-        // TODO: Create the redis cache for the network
-    }
 }
 
 module.exports = TagNetworkProvider;
