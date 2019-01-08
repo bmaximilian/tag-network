@@ -4,8 +4,8 @@
  * @author Maximilian Beck <maximilian.beck@wtl.de>
  */
 
-const { NeuralNetwork } = require('brain.js');
-const { isEmpty } = require('lodash');
+const brain = require('brain.js');
+const { isEmpty, includes } = require('lodash');
 
 /**
  * @class TagSuggestionService
@@ -14,14 +14,17 @@ class TagSuggestionService {
     /**
      * Constructor of TagSuggestionService
      */
-    constructor(config, tagNetwork) {
+    constructor(config, tagNetwork, logger) {
         this.config = config;
         this.tagNetwork = tagNetwork;
-        this.neuralNetwork = new NeuralNetwork({
-            binaryThresh: this.config.get('tags.suggestionService.binaryThresh'),
+        this.logger = logger;
+        this.neuralNetwork = new brain.recurrent.RNN({
             hiddenLayers: this.config.get('tags.suggestionService.hiddenLayers'),
-            activation: this.config.get('tags.suggestionService.activation'),
-            leakyReluAlpha: this.config.get('tags.suggestionService.leakyReluAlpha'),
+            inputSize: this.config.get('tags.suggestionService.inputSize'),
+            inputRange: this.config.get('tags.suggestionService.inputRange'),
+            outputSize: this.config.get('tags.suggestionService.outputSize'),
+            learningRate: this.config.get('tags.suggestionService.learningRate'),
+            decayRate: this.config.get('tags.suggestionService.decayRate'),
         });
     }
 
@@ -30,10 +33,11 @@ class TagSuggestionService {
      *
      * @return {void}
      */
-    async train() {
+    async train(requiredTags = null) {
+        this.logger.info('Training neural network');
         const network = await this.tagNetwork.getAll();
 
-        const allCombinations = network.reduce((accumulator, current) => {
+        let allCombinations = network.reduce((accumulator, current) => {
             const tagNames = [current.name, ...current.relatedTags.map(t => t.name)];
             const combinations = [];
 
@@ -66,7 +70,20 @@ class TagSuggestionService {
             ];
         }, []);
 
-        this.neuralNetwork.train(allCombinations);
+        this.logger.info(`Got ${allCombinations.length} combinations to train the neural network`);
+
+        if (!isEmpty(requiredTags)) {
+            allCombinations = allCombinations.filter(combi => requiredTags.some(tag => includes(combi.input, tag)));
+
+            this.logger.info(`Reduced combinations to ${allCombinations.length}.`);
+        }
+
+        this.neuralNetwork.train(allCombinations, {
+            iterations: 2,
+            log: details => this.logger.info(details),
+        });
+
+        this.logger.info('Trained neural network successfully.');
     }
 
     /**
@@ -74,7 +91,8 @@ class TagSuggestionService {
      *
      * @return {object[]}: The tag suggestions
      */
-    get(tags) {
+    async get(tags) {
+        await this.train(tags);
         return this.neuralNetwork.run(tags);
     }
 }

@@ -36,7 +36,7 @@ class TagController {
     async suggestions({ request }) {
         const requestBody = request.only(['tags']);
 
-        const tags = TagSuggestion.get(requestBody.tags);
+        const tags = await TagSuggestion.get(requestBody.tags);
 
         return { tags };
     }
